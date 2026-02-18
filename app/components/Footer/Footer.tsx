@@ -1,53 +1,34 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-
 const Footer = () => {
-    const { ref, inView } = useInView({
-        triggerOnce: true,
-        threshold: 0.5,
-    });
-
-    return (
-        <footer className="max-w-screen-xl mx-auto px-4 py-6 md:px-8 md:py-10">
-            <motion.div
-                ref={ref}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
-                transition={{ duration: 1 }}
-                className="text-center flex flex-col items-center"
-            >
-                <div>
-                    <a
-                        className="flex-none text-sm font-head font-extrabold text-orange"
-                        href="#"
-                        aria-label="Brand"
-                    >
-                        <motion.img
-                            src="/assets/Logo/protocol.svg"
-                            alt="protocol-Logo"
-                            className="w-36 h-16"
-                            whileHover={{ rotate: [0, 360], transition: { duration: 2, loop: Infinity } }}
-                        />
-                    </a>
-                </div>
-
-                <div className="mt-3">
-                    <p className="mb-2 font-sans font-base text-gray-500 text-normal sm:text-lg">
-                        We're part of the{' '}
-                        <a
-                            className="font-sans font-bold text-normal sm:text-lg hover:text-blue-800"
-                            href="https://www.ieee.org/"
-                        >
-                            IEEE
-                        </a>{' '}
-                        family.
-                    </p>
-                    <p className="font-sans font-base text-gray-500 text-xs sm:text-normal">© 2024 IEEE SRM. All rights reserved.</p>
-                </div>
-            </motion.div>
-        </footer>
-    );
+  return (
+    <footer className="bg-black border-t border-white/[0.06]">
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
+          <div className="flex items-center gap-5">
+            <img
+              src="/assets/Logo/protocol.svg"
+              alt="Protocol"
+              className="h-5 brightness-0 invert opacity-40"
+            />
+            <span className="text-white/35 text-xs">
+              Part of the{" "}
+              <a
+                href="https://www.ieee.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/50 hover:text-white transition-colors underline underline-offset-2"
+              >
+                IEEE
+              </a>{" "}
+              family.
+            </span>
+          </div>
+          <p className="text-white/25 text-xs">
+            © 2024 IEEE SRM. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

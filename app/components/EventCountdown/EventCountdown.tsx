@@ -1,71 +1,91 @@
-import React, { useState, useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
-import { motion } from 'framer-motion';
+"use client";
 
-const AnimatedEventCountdown = () => {
-    const eventStartDate = new Date('2024-04-12T20:00:00');
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
-    const calculateTimeLeft = () => {
-        const difference = +eventStartDate - +new Date();
-        let timeLeft = {
-            days: 0,
-            hours: 0,
-            minutes: 0,
-            seconds: 0
-        };
+const EVENT_DATE = new Date("2024-04-12T20:00:00");
 
-        if (difference > 0) {
-            timeLeft = {
-                days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                minutes: Math.floor((difference / (1000 * 60)) % 60),
-                seconds: Math.floor((difference / 1000) % 60)
-            };
-        }
-
-        return timeLeft;
-    };
-
-    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setTimeLeft(calculateTimeLeft());
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    });
-
-    const formatTime = (time: number) => {
-        return time < 10 ? `0${time}` : time;
-    };
-
-    const { ref, inView } = useInView({
-        triggerOnce: true,
-        threshold: 0.5,
-    });
-
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-screen-xl mx-auto px-4 py-6 md:px-8 md:py-10"
-        >
-            <div className="mx-auto mb-10 items-center justify-center text-center">
-                <h2 className="mb-4 md:mb-6 font-sans font-bold text-black text-2xl sm:text-4xl">
-                    Event Countdown
-                </h2>
-                <p className="font-sans font-bold text-center text-blue-800 text-4xl xl:text-6xl">
-                    {timeLeft.days} Days {' '}
-                    {formatTime(timeLeft.hours)} Hrs {' '}
-                    {formatTime(timeLeft.minutes)} Mins {' '}
-                    {formatTime(timeLeft.seconds)} Sec
-                </p>
-            </div>
-        </motion.div>
-    );
+const calcTimeLeft = () => {
+  const diff = +EVENT_DATE - +new Date();
+  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+    minutes: Math.floor((diff / (1000 * 60)) % 60),
+    seconds: Math.floor((diff / 1000) % 60),
+  };
 };
 
-export default AnimatedEventCountdown;
+const pad = (n: number) => n.toString().padStart(2, "0");
+
+const EventCountdown = () => {
+  const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
+  const isComplete = +EVENT_DATE <= +new Date();
+
+  useEffect(() => {
+    if (isComplete) return;
+    const timer = setInterval(() => setTimeLeft(calcTimeLeft()), 1000);
+    return () => clearInterval(timer);
+  }, [isComplete]);
+
+  const units = [
+    { label: "Days", value: timeLeft.days },
+    { label: "Hours", value: timeLeft.hours },
+    { label: "Minutes", value: timeLeft.minutes },
+    { label: "Seconds", value: timeLeft.seconds },
+  ];
+
+  return (
+    <section
+      className="bg-black border-t border-white/[0.06] py-28 sm:py-36"
+      ref={ref}
+    >
+      <div className="max-w-7xl mx-auto px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <p className="text-[#2997ff] text-xs tracking-[0.3em] uppercase font-semibold mb-5">
+            Event Countdown
+          </p>
+          <h2 className="text-white text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08] mb-3">
+            April 12, 2024
+          </h2>
+          {isComplete && (
+            <p className="text-white/30 text-xs tracking-[0.25em] uppercase mb-12">
+              Event complete
+            </p>
+          )}
+
+          <div className="grid grid-cols-4 gap-3 sm:gap-4 max-w-xl mx-auto mt-14">
+            {units.map((unit, i) => (
+              <motion.div
+                key={unit.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                  duration: 0.7,
+                  delay: i * 0.08,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+                className="bg-[#141414] border border-white/[0.08] rounded-2xl py-6 px-2"
+              >
+                <div className="text-white font-bold text-2xl sm:text-3xl md:text-4xl font-mono tabular-nums leading-none">
+                  {pad(unit.value)}
+                </div>
+                <div className="text-white/30 text-[10px] uppercase tracking-[0.2em] mt-3">
+                  {unit.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default EventCountdown;

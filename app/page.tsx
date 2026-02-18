@@ -1,43 +1,32 @@
 "use client";
 
-import React from 'react';
-import Head from 'next/head';
+import Navbar from "./components/Navbar/Navbar";
+import Hero from "./components/Hero/Hero";
+import Winners from "./components/Winners/Winners";
+import About from "./components/About/About";
+import Tracks from "./components/Tracks/Tracks";
+import Mentors from "./components/Mentors/Mentors";
+import EventCountdown from "./components/EventCountdown/EventCountdown";
+import EventTimeline from "./components/EventTimeline/EventTimeline";
+import FAQ from "./components/FAQ/FAQ";
+import CTA from "./components/CTA/CTA";
+import Footer from "./components/Footer/Footer";
 
-import Navbar from './components/Navbar/Navbar';
-import Hero from './components/Hero/Hero';
-import Winners from './components/Winners/Winners';
-import EventCountdown from './components/EventCountdown/EventCountdown';
-import About from './components/About/About';
-import Tracks from './components/Tracks/Tracks';
-import Mentors from './components/Mentors/Mentors';
-import EventTimeline from './components/EventTimeline/EventTimeline';
-import FAQ from './components/FAQ/FAQ';
-import CTA from './components/CTA/CTA';
-import Footer from './components/Footer/Footer';
-
-import '../app/globals.css';
-
-const HomePage: React.FC = () => {
+const HomePage = () => {
   return (
-    <div>
-      <Head>
-        <title>PROTOCOL 1.0 | IEEE SRMIST</title>
-        <meta name="description" content="Empower Computer Science and Engineering students to innovate and create impactful solutions using cutting-edge technologies in a supportive online environment. Join PROTOCOL 1.0 hackathon now!" />
-        <meta name="keywords" content="PROTOCOL 1.0, hackathon, IEEE SRMIST, computer science, engineering, innovation, technology" />
-        <link rel="icon" href="/favicon.ico?v=2" />
-      </Head>
-
+    <main>
       <Navbar />
       <Hero />
       <Winners />
       <About />
       <Tracks />
       <Mentors />
+      <EventCountdown />
       <EventTimeline />
       <FAQ />
       <CTA />
       <Footer />
-    </div>
+    </main>
   );
 };
 

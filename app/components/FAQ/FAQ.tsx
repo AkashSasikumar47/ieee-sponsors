@@ -1,102 +1,113 @@
-import React from 'react';
-import { useInView } from 'react-intersection-observer';
-import { motion } from 'framer-motion';
+"use client";
 
-const AnimatedFAQ = () => {
-    const { ref, inView } = useInView({
-        triggerOnce: true,
-        threshold: 0.5,
-    });
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
-    const faqVariants = {
-        visible: { opacity: 1, y: 0 },
-        hidden: { opacity: 0, y: 50 },
-    };
+const FAQS = [
+  {
+    q: "How do I register for the hackathon?",
+    a: 'Registration is simple! Click on the "Register Now" button on the homepage and follow the instructions on the registration page.',
+  },
+  {
+    q: "Can I participate individually or do I need to form a team?",
+    a: "You can participate individually or as part of a team. However, forming a team is recommended to collaborate and tackle challenges more effectively.",
+  },
+  {
+    q: "Are there any registration fees?",
+    a: "No, participation in Protocol is completely free of charge.",
+  },
+  {
+    q: "What are the eligibility criteria?",
+    a: "Protocol is open to Computer Science and Engineering students from all over the world. As long as you have a passion for technology and innovation, you're welcome to join!",
+  },
+  {
+    q: "Can I work on a pre-existing project?",
+    a: "Yes, pre-existing projects are allowed as long as they align with one of the hackathon themes and are submitted within the specified timeline.",
+  },
+  {
+    q: "How will projects be judged?",
+    a: "Projects will be judged based on creativity, technical complexity, impact, and presentation. Judges will evaluate each project holistically to determine the winners.",
+  },
+];
 
-    return (
-        <motion.section
-            ref={ref}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            variants={faqVariants}
-            transition={{ duration: 1 }}
-            className="max-w-screen-xl mx-auto px-4 py-6 md:px-8 md:py-10"
+const FAQ = () => {
+  const [open, setOpen] = useState<number | null>(null);
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  return (
+    <section
+      className="bg-black border-t border-white/[0.06] py-28 sm:py-36"
+      ref={ref}
+    >
+      <div className="max-w-4xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          className="mb-16"
         >
-            <div className="mx-auto mb-10">
-                <h3 className="mb-2 sm:mb-4 font-sans font-semibold text-blue-800 text-xs lg:text-base">
-                    FAQ
-                </h3>
-                <h2 className="mb-4 md:mb-6 font-sans font-bold text-black text-2xl sm:text-4xl">
-                    Frequently Asked Questions
-                </h2>
-                <h4 className="max-w-screen-sm font-sans font-base text-gray-500 text-sm sm:text-lg">
-                    Answers to commonly asked questions about PROTOCOL 1.0.
-                </h4>
-            </div>
-            <div className="grid gap-8 sm:grid-cols-2 md:gap-12 xl:grid-cols-3 xl:gap-16">
-                <motion.div
-                    className="mb-8"
+          <p className="text-[#2997ff] text-xs tracking-[0.3em] uppercase font-semibold mb-5">
+            FAQ
+          </p>
+          <h2 className="text-white text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]">
+            Common questions.
+          </h2>
+        </motion.div>
+
+        <div className="divide-y divide-white/[0.08]">
+          {FAQS.map((faq, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{
+                duration: 0.6,
+                delay: i * 0.07,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
+            >
+              <button
+                onClick={() => setOpen(open === i ? null : i)}
+                className="w-full flex items-center justify-between py-6 text-left group"
+              >
+                <span className="text-white font-semibold text-base sm:text-lg pr-8 group-hover:text-[#2997ff] transition-colors duration-200">
+                  {faq.q}
+                </span>
+                <motion.span
+                  animate={{ rotate: open === i ? 45 : 0 }}
+                  transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="text-white/35 text-2xl font-light shrink-0 leading-none select-none"
                 >
-                    <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">
-                        How do I register for the hackathon?
-                    </h3>
-                    <p className="font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                        Registration is simple! Click on the "Register Now" button on the homepage and follow the instructions on the registration page.
-                    </p>
-                </motion.div>
-                <motion.div
-                    className="mb-8"
-                >
-                    <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">
-                        Can I participate individually or do I need to form a team?
-                    </h3>
-                    <p className="font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                        You can participate individually or as part of a team. However, forming a team is recommended to collaborate and tackle challenges more effectively.
-                    </p>
-                </motion.div>
-                <motion.div
-                    className="mb-8"
-                >
-                    <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">
-                        Are there any registration fees for participating in the hackathon?
-                    </h3>
-                    <p className="font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                        No, participation in the hackathon is completely free of charge.
-                    </p>
-                </motion.div>
-                <motion.div
-                    className="mb-8"
-                >
-                    <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">
-                        What are the eligibility criteria to participate?
-                    </h3>
-                    <p className="font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                        PROTOCOL 1.0 is open to Computer Science and Engineering students from all over the world. As long as you have a passion for technology and innovation, you're welcome to join!
-                    </p>
-                </motion.div>
-                <motion.div
-                    className="mb-8"
-                >
-                    <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">
-                        Can I work on a project that I've already started before the hackathon?
-                    </h3>
-                    <p className="font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                        Yes, you're allowed to work on pre-existing projects, as long as they align with one of the hackathon's themes and are submitted within the specified timeline.
-                    </p>
-                </motion.div>
-                <motion.div
-                    className="mb-8"
-                >
-                    <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">
-                        How will projects be judged, and what criteria will be used?
-                    </h3>
-                    <p className="font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                        Projects will be judged based on criteria such as creativity, technical complexity, impact, and presentation. Judges will evaluate each project holistically to determine the winners.
-                    </p>
-                </motion.div>
-            </div>
-        </motion.section>
-    );
+                  +
+                </motion.span>
+              </button>
+
+              {/*
+                CSS max-height transition is used here instead of Framer Motion AnimatePresence.
+                Animating height:"auto" with AnimatePresence requires Framer Motion to measure
+                the element height before it is visible, which fails in many configurations.
+                max-height CSS transition is 100% reliable for accordion patterns.
+              */}
+              <div
+                style={{
+                  maxHeight: open === i ? "400px" : "0px",
+                  opacity: open === i ? 1 : 0,
+                  overflow: "hidden",
+                  transition:
+                    "max-height 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)",
+                }}
+              >
+                <p className="text-white/55 text-base pb-6 leading-relaxed">
+                  {faq.a}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
-export default AnimatedFAQ;
+export default FAQ;

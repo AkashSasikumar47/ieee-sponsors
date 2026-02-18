@@ -1,100 +1,110 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+
+const WINNERS = [
+  {
+    position: "1st Place",
+    team: "PIE",
+    members: [
+      { name: "Shivam Umang Mitter", id: "RA2111003011074" },
+      { name: "Shinjan Patra", id: "RA2211003011869" },
+    ],
+    icon: "🥇",
+    border: "border-yellow-400/20",
+    glow: "from-yellow-400/8 to-transparent",
+    tag: "text-yellow-300 bg-yellow-400/10 border-yellow-400/20",
+  },
+  {
+    position: "2nd Place",
+    team: "Watch Dogs",
+    members: [
+      { name: "Vijai Krishna Prasanna", id: "RA2211018010007" },
+      { name: "Sreeram Reji Madhavan", id: "RA2211018010028" },
+    ],
+    icon: "🥈",
+    border: "border-zinc-400/20",
+    glow: "from-zinc-400/8 to-transparent",
+    tag: "text-zinc-300 bg-zinc-400/10 border-zinc-400/20",
+  },
+  {
+    position: "3rd Place",
+    team: "Cyber Life",
+    members: [
+      { name: "Parth Nath Chauhan", id: "RA2311030010162" },
+      { name: "Aayush Namdeo", id: "RA2311027010189" },
+    ],
+    icon: "🥉",
+    border: "border-orange-400/20",
+    glow: "from-orange-400/8 to-transparent",
+    tag: "text-orange-300 bg-orange-400/10 border-orange-400/20",
+  },
+];
 
 const Winners = () => {
-    const { ref, inView } = useInView({
-        triggerOnce: true,
-        rootMargin: '-50px 0px'
-    });
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
-    const cardVariants = {
-        hidden: { opacity: 0, scale: 0.8 },
-        visible: {
-            opacity: 1,
-            scale: 1,
-            transition: {
-                duration: 1,
-                ease: "easeInOut"
-            }
-        }
-    };
-
-    return (
+  return (
+    <section
+      className="bg-black border-t border-white/[0.06] py-28 sm:py-36"
+      ref={ref}
+    >
+      <div className="max-w-7xl mx-auto px-6">
         <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 50 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-            transition={{ duration: 1 }}
-            className="max-w-screen-xl mx-auto px-4 py-6 md:px-8 md:py-10"
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          className="mb-16"
         >
-            <div className="mx-auto mb-10">
-                <motion.h3
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-2 sm:mb-4 font-sans font-semibold text-blue-800 text-xs lg:text-base"
-                >
-                    WINNERS
-                </motion.h3>
-                <motion.h2
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-4 md:mb-6 font-sans font-bold text-black text-2xl sm:text-4xl"
-                >
-                    Congratulations to the Winners of PROTOCOL 1.0!
-                </motion.h2>
-                <motion.h4
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="max-w-screen-sm font-sans font-base text-gray-500 text-sm sm:text-lg"
-                >
-                    We are thrilled to announce the top three teams who excelled in the hackathon.
-                </motion.h4>
-            </div>
-            <motion.div
-                variants={{
-                    hidden: { opacity: 0 },
-                    visible: {
-                        opacity: 1,
-                        transition: {
-                            delayChildren: 0.3,
-                            staggerChildren: 0.2
-                        }
-                    }
-                }}
-                initial="hidden"
-                animate={inView ? "visible" : "hidden"}
-                className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            >
-                {/* Winner Card 1 */}
-                <motion.div variants={cardVariants} className="bg-white rounded-lg shadow-md p-6">
-                    <motion.h2 className="text-xl font-bold text-blue-800 mb-2">1st Position: PIE</motion.h2>
-                    <ul className="list-disc ml-6">
-                        <motion.li>Shivam Umang Mitter (RA2111003011074)</motion.li>
-                        <motion.li>Shinjan Patra (RA2211003011869)</motion.li>
-                    </ul>
-                </motion.div>
-
-                {/* Winner Card 2 */}
-                <motion.div variants={cardVariants} className="bg-white rounded-lg shadow-md p-6">
-                    <motion.h2 className="text-xl font-bold text-blue-800 mb-2">2nd Position: Watch Dogs</motion.h2>
-                    <ul className="list-disc ml-6">
-                        <motion.li>Vijai Krishna Prasanna (RA2211018010007)</motion.li>
-                        <motion.li>Sreeram Reji Madhavan (RA2211018010028)</motion.li>
-                    </ul>
-                </motion.div>
-
-                {/* Winner Card 3 */}
-                <motion.div variants={cardVariants} className="bg-white rounded-lg shadow-md p-6">
-                    <motion.h2 className="text-xl font-bold text-blue-800 mb-2">3rd Position: Cyber Life</motion.h2>
-                    <ul className="list-disc ml-6">
-                        <motion.li>Parth Nath Chauhan (RA2311030010162)</motion.li>
-                        <motion.li>Aayush Namdeo (RA2311027010189)</motion.li>
-                    </ul>
-                </motion.div>
-            </motion.div>
+          <p className="text-[#2997ff] text-xs tracking-[0.3em] uppercase font-semibold mb-5">
+            Hackathon Results
+          </p>
+          <h2 className="text-white text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]">
+            Congratulations
+            <br />
+            to the winners.
+          </h2>
         </motion.div>
-    );
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {WINNERS.map((w, i) => (
+            <motion.div
+              key={w.team}
+              initial={{ opacity: 0, y: 40 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{
+                duration: 0.8,
+                delay: i * 0.12,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
+              className={`bg-gradient-to-b ${w.glow} bg-[#141414] border ${w.border} rounded-2xl p-7`}
+            >
+              <div className="flex items-start justify-between mb-7">
+                <span
+                  className={`text-xs font-semibold px-3 py-1 rounded-full border ${w.tag}`}
+                >
+                  {w.position}
+                </span>
+                <span className="text-2xl">{w.icon}</span>
+              </div>
+              <h3 className="text-white text-xl font-bold mb-5">{w.team}</h3>
+              <div className="space-y-3">
+                {w.members.map((m) => (
+                  <div key={m.name}>
+                    <p className="text-white/70 text-sm font-medium">{m.name}</p>
+                    <p className="text-white/25 text-xs font-mono mt-0.5">
+                      {m.id}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Winners;

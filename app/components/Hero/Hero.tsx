@@ -1,84 +1,97 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+"use client";
 
-const Hero: React.FC = () => {
-    const videoRef = useRef<HTMLVideoElement | null>(null);
-    const textControls = useAnimation();
+import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 
-    useEffect(() => {
-        const playVideo = () => {
-            if (videoRef.current) {
-                videoRef.current.play()
-                    .then(() => { })
-                    .catch(error => {
-                        console.error('Error playing video:', error);
-                    });
-            }
-        };
+const Hero = () => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
-        const handleInteraction = () => {
-            playVideo();
-            document.removeEventListener('click', handleInteraction);
-        };
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, []);
 
-        document.addEventListener('click', handleInteraction);
+  return (
+    <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
+      <video
+        ref={videoRef}
+        src="/assets/videos/190605(720p).mp4"
+        className="absolute inset-0 h-full w-full object-cover opacity-30"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
 
-        textControls.start({
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.8, delay: 0.5 }
-        });
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" />
 
-        return () => {
-            document.removeEventListener('click', handleInteraction);
-        };
-    }, []);
+      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-white/40 text-xs sm:text-sm tracking-[0.3em] uppercase mb-6 font-medium"
+        >
+          IEEE SRM SB presents
+        </motion.p>
 
-    return (
-        <div className="max-w-screen-xl mx-auto px-4 py-6 md:px-8 md:py-10">
-            <main className="relative flex flex-1 shrink-0 items-center justify-center overflow-hidden rounded-6xl bg-gray-100 shadow-lg py-24 md:py-36">
-                <video
-                    ref={videoRef}
-                    src="/videos/190605(720p).mp4"
-                    className="absolute inset-0 h-full w-full object-cover object-center"
-                    autoPlay
-                    loop
-                    muted
-                >
-                    Your browser does not support the video tag.
-                </video>
-                <motion.div
-                    initial={{ opacity: 0, y: -50 }}
-                    animate={textControls}
-                    className="relative flex flex-col items-center p-4 lg:px-36"
-                >
-                    <p className="mb-4 md:mb-8 font-sans font-medium text-center text-white text-lg sm:text-2xl">
-                        PROTOCOL 1.0
-                    </p>
-                    <motion.h1
-                        className="mb-8 lg:mb-12 xl:px-24 font-sans font-bold text-center text-white text-4xl xl:text-6xl"
-                        initial={{ opacity: 0, y: -50 }}
-                        animate={textControls}
-                    >
-                        Empowering Innovations in Tech
-                    </motion.h1>
-                    <div className="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center">
-                        <a href="https://registrations.ieeesrmist.com/protocol" className="relative inline-block text-lg text-center group">
-                            <span className="relative z-10 block px-5 py-3 overflow-hidden font-sans font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-xl group-hover:text-white">
-                                <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-xl bg-gray-50" />
-                                <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease" />
-                                <span className="relative">REGISTER</span>
-                            </span>
-                            <span
-                                className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-xl group-hover:mb-0 group-hover:mr-0"
-                                data-rounded="rounded-xl"
-                            />
-                        </a>
-                    </div>
-                </motion.div>
-            </main>
-        </div>
-    );
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-white font-black text-[clamp(4.5rem,16vw,11rem)] leading-none tracking-tight mb-6"
+        >
+          PROTOCOL
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-white/50 text-lg sm:text-xl md:text-2xl font-light tracking-wide mb-12"
+        >
+          Empowering Innovations in Tech
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.3, ease: [0.25, 0.1, 0.25, 1] }}
+          className="flex items-center justify-center gap-3"
+        >
+          <a
+            href="https://registrations.ieeesrmist.com/protocol"
+            className="inline-flex items-center justify-center px-8 py-3.5 bg-white text-black text-sm font-semibold rounded-full hover:bg-white/90 transition-all duration-300 hover:scale-[1.03] active:scale-95"
+          >
+            Register Now
+          </a>
+          <a
+            href="#about"
+            className="inline-flex items-center justify-center px-8 py-3.5 bg-white/[0.08] text-white text-sm font-semibold rounded-full border border-white/[0.12] hover:bg-white/[0.14] transition-all duration-300 backdrop-blur-sm"
+          >
+            Learn More
+          </a>
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.2, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      >
+        <span className="text-white/25 text-[10px] tracking-[0.25em] uppercase">
+          Scroll
+        </span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="w-px h-8 bg-gradient-to-b from-white/25 to-transparent"
+        />
+      </motion.div>
+    </section>
+  );
 };
 
 export default Hero;

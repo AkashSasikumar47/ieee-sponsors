@@ -1,84 +1,130 @@
-import React from 'react';
-import { useInView } from 'react-intersection-observer';
-import { motion } from 'framer-motion';
+"use client";
 
-const AnimatedEventTimeline = () => {
-    const { ref, inView } = useInView({
-        triggerOnce: true,
-        threshold: 0.5,
-    });
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
-    return (
-        <motion.section
-            ref={ref}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
-            transition={{ duration: 1 }}
-            className="max-w-screen-xl mx-auto px-4 py-6 md:px-8 md:py-10"
+const EVENTS = [
+  {
+    phase: "01",
+    title: "Introduction & Track Description",
+    date: "April 12, 2024",
+    time: "8:00 PM – 10:00 PM",
+    details: [
+      "Kick off with an introduction to Protocol",
+      "Detailed descriptions of all four tracks",
+      "Live Q&A session for participants",
+    ],
+  },
+  {
+    phase: "02",
+    title: "Hackathon Begins",
+    date: "April 13, 2024",
+    time: "10:00 AM",
+    details: [
+      "Start hacking — participants begin building their projects",
+    ],
+  },
+  {
+    phase: "03",
+    title: "Project Submission",
+    date: "April 15, 2024",
+    time: "8:00 PM – 10:00 PM",
+    details: [
+      "Submit your GitHub repository link",
+      "Include a case study presentation",
+      "Upload a short project demo video",
+    ],
+  },
+  {
+    phase: "04",
+    title: "Results Declaration",
+    date: "April 16, 2024",
+    time: "8:00 PM – 10:00 PM",
+    details: [
+      "Winners and top projects announced",
+      "Certificates issued to all participants",
+    ],
+  },
+];
+
+const EventTimeline = () => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  return (
+    <section
+      className="bg-black border-t border-white/[0.06] py-28 sm:py-36"
+      ref={ref}
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          className="mb-20"
         >
-            <div className="mx-auto mb-10">
-                <h3 className="mb-2 sm:mb-4 font-sans font-semibold text-blue-800 text-xs lg:text-base">
-                    EVENT TIMELINE
-                </h3>
-                <h2 className="mb-4 md:mb-6 font-sans font-bold text-black text-2xl sm:text-4xl">
-                    Hackathon Schedule
-                </h2>
-                <h4 className="max-w-screen-sm font-sans font-base text-gray-500 text-sm sm:text-lg">
-                    Stay on track with our hackathon schedule, from introduction to project submission and results declaration.
-                </h4>
-            </div>
-            <div className="mx-auto">
-                <div className="border-l-2 border-gray-500 pl-8">
-                    <div className="flex flex-col md:flex-row md:justify-between mb-4">
-                        <div className="mb-4 md:mb-0">
-                            <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">Introduction & Track Description</h3>
-                            <p className="mb-1 font-sans font-base text-gray-600 text-xs sm:text-sm">Date: April 12, 2024</p>
-                            <p className="font-sans font-base text-gray-600 text-xs sm:text-sm">Time: 8:00 PM - 10:00 PM</p>
-                        </div>
-                        <p className="max-w-sm font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                            ✦ Kick off the event with an introduction to PROTOCOL 1.0.
-                            <br />
-                            ✦ Provide detailed descriptions of the three tracks: HealthTech Solutions, Future Tech Innovations, and Sustainable Development.
-                            <br />
-                            ✦ Address any questions or doubts participants may have about the hackathon.
-                        </p>
+          <p className="text-[#2997ff] text-xs tracking-[0.3em] uppercase font-semibold mb-5">
+            Schedule
+          </p>
+          <h2 className="text-white text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]">
+            Hackathon timeline.
+          </h2>
+        </motion.div>
+
+        <div className="relative">
+          {/* Vertical line */}
+          <div className="absolute left-4 sm:left-6 top-2 bottom-2 w-px bg-white/[0.08]" />
+
+          <div className="space-y-5">
+            {EVENTS.map((event, i) => (
+              <motion.div
+                key={event.phase}
+                initial={{ opacity: 0, x: -20 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{
+                  duration: 0.8,
+                  delay: i * 0.15,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+                className="relative pl-14 sm:pl-20"
+              >
+                {/* Dot */}
+                <div className="absolute left-[11px] sm:left-[19px] top-6 w-2.5 h-2.5 rounded-full bg-[#2997ff] ring-4 ring-black" />
+
+                <div className="bg-[#141414] border border-white/[0.08] rounded-2xl p-7 sm:p-8">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
+                    <div>
+                      <span className="text-[#2997ff] text-xs font-mono font-semibold tracking-wider">
+                        Phase {event.phase}
+                      </span>
+                      <h3 className="text-white text-lg font-bold mt-1">
+                        {event.title}
+                      </h3>
                     </div>
-                    <div className="flex flex-col md:flex-row md:justify-between mb-4">
-                        <div className="mb-4 md:mb-0">
-                            <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">Hackathon Begins</h3>
-                            <p className="mb-1 font-sans font-base text-gray-600 text-xs sm:text-sm">Date: April 13, 2024</p>
-                            <p className="font-sans font-base text-gray-600 text-xs sm:text-sm">Time: 10:00 AM</p>
-                        </div>
-                        <p className="max-w-sm font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                            ✦ Start hacking! Participants begin working on their projects according to the tracks.
-                        </p>
+                    <div className="sm:text-right shrink-0">
+                      <p className="text-white/70 text-sm font-medium">{event.date}</p>
+                      <p className="text-white/35 text-xs mt-0.5">{event.time}</p>
                     </div>
-                    <div className="flex flex-col md:flex-row md:justify-between mb-4">
-                        <div className="mb-4 md:mb-0">
-                            <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">Project Submission Deadline</h3>
-                            <p className="mb-1 font-sans font-base text-gray-600 text-xs sm:text-sm">Date: April 15, 2024</p>
-                            <p className="font-sans font-base text-gray-600 text-xs sm:text-sm">Time: 8:00 PM - 10:00 PM</p>
-                        </div>
-                        <p className="max-w-sm font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                            ✦ Participants must submit their projects by this time.
-                            <br />
-                            ✦ Submission requirements: GitHub links to code repositories, a case study PowerPoint presentation, and a small video about their project.
-                        </p>
-                    </div>
-                    <div className="flex flex-col md:flex-row md:justify-between">
-                        <div className="mb-4 md:mb-0">
-                            <h3 className="mb-2 font-sans font-bold text-base sm:text-lg">Results Declaration</h3>
-                            <p className="mb-1 font-sans font-base text-gray-600 text-xs sm:text-sm">Date: April 16, 2024</p>
-                            <p className="font-sans font-base text-gray-600 text-xs sm:text-sm">Time: 8:00 PM - 10:00 PM</p>
-                        </div>
-                        <p className="max-w-sm font-sans font-base text-gray-600 text-xs sm:text-sm text-justify">
-                            ✦ Winners and top projects will be announced. Certificates will be provided for all Participants.
-                        </p>
-                    </div>
+                  </div>
+
+                  <ul className="space-y-1.5 border-t border-white/[0.06] pt-4">
+                    {event.details.map((detail) => (
+                      <li
+                        key={detail}
+                        className="text-white/50 text-sm flex items-start gap-2"
+                      >
+                        <span className="text-[#2997ff] mt-0.5 shrink-0">›</span>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-            </div>
-        </motion.section>
-    );
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
-export default AnimatedEventTimeline;
+export default EventTimeline;
