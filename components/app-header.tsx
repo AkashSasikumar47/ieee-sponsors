@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { IeeeLogo } from "@ieee/ui/layout/ieee-logo";
 import Link from "next/link";
 
 export function AppHeader() {
@@ -18,13 +18,7 @@ export function AppHeader() {
         rel="noopener noreferrer"
         aria-label="IEEE SRMIST"
       >
-        <Image
-          src="/logos/ieee-srmist-logo.png"
-          alt="IEEE SRMIST"
-          width={32}
-          height={32}
-          preload
-        />
+        <IeeeLogo tone="dark" preload />
       </a>
     </header>
   );
